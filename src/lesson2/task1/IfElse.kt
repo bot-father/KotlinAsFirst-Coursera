@@ -80,7 +80,7 @@ fun ageDescription(age: Int): String =
 fun timeForHalfWay(t1: Double, v1: Double,
                    t2: Double, v2: Double,
                    t3: Double, v3: Double): Double {
-    var halfpath : Double = (t1 * v1 + t2 * v2 + t3 * v3) / 2
+    val halfpath : Double = (t1 * v1 + t2 * v2 + t3 * v3) / 2
     if(t1 * v1 > halfpath) return halfpath / v1
     if(t1 * v1 + t2 * v2 > halfpath) return t1 + (halfpath - t1 * v1) / v2
     else return t1 + t2 + (halfpath - t1 * v1 - t2 * v2) / v3
@@ -114,7 +114,11 @@ fun whichRookThreatens(kingX: Int, kingY: Int,
  */
 fun rookOrBishopThreatens(kingX: Int, kingY: Int,
                           rookX: Int, rookY: Int,
-                          bishopX: Int, bishopY: Int): Int = TODO()
+                          bishopX: Int, bishopY: Int): Int {
+    var bang : Int = 0
+    if(kingX == rookX || kingY == rookY) bang = 1 // угроза от ладьи
+    if(kingX - kingY == bishopX - bishopY || kingX + kingY == bishopX + bishopY) bang += 2 // угроза от слона
+    return bang}
 
 /**
  * Простая
@@ -124,7 +128,21 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  * прямоугольным (вернуть 1) или тупоугольным (вернуть 2).
  * Если такой треугольник не существует, вернуть -1.
  */
-fun triangleKind(a: Double, b: Double, c: Double): Int = TODO()
+fun pifagor(gipo: Double, katet1: Double,katet2: Double): Int { //Пифагор
+    val katets = katet1 * katet1 + katet2 * katet2
+    val gipoquadrat = gipo * gipo
+    if(katets == gipoquadrat) return 1
+    if(katets > gipoquadrat) return 0
+    else return 2
+}
+
+fun triangleKind(a: Double, b: Double, c: Double): Int {
+    val sum : Double = (a + b + c) / 2
+    if(sum < a || sum < b || sum < c) return -1
+    if(a > b && a > c) return pifagor(a, b, c) //поиск длиннейшей стороны
+    if(b > a && b > c) return pifagor(b, a, c)
+    else return pifagor(c, b, a)
+}
 
 /**
  * Средняя
@@ -134,4 +152,11 @@ fun triangleKind(a: Double, b: Double, c: Double): Int = TODO()
  * Найти длину пересечения отрезков AB и CD.
  * Если пересечения нет, вернуть -1.
  */
-fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = TODO()
+fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = when{
+    b < c -> -1
+    b >= c && c >= a && d >= b -> b - c
+    d >= a && c <= a && b >= d -> d - a
+    a <= c && d <= b -> d - c
+    a >= c && d >= b -> b - a
+    else -> -1
+}
