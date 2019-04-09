@@ -67,6 +67,7 @@ class Tests {
     fun digitNumber() {
         assertEquals(1, digitNumber(0))
         assertEquals(1, digitNumber(7))
+        assertEquals(6, digitNumber(145650))
         assertEquals(2, digitNumber(10))
         assertEquals(2, digitNumber(99))
         assertEquals(3, digitNumber(123))
@@ -76,6 +77,22 @@ class Tests {
     @Test
     @Tag("Easy")
     fun fib() {
+        assertEquals(1, fib(1))
+        assertEquals(1, fib(2))
+        assertEquals(2, fib(3))
+        assertEquals(5, fib(5))
+        assertEquals(21, fib(8))
+        assertEquals(55, fib(10))
+        assertEquals(102334155, fib(40))
+        assertEquals(1134903170, fib(45))
+        assertEquals(1836311903, fib(46))
+        // Just to calculate it
+        fib(50)
+    }
+
+    @Test
+    @Tag("Easy")
+    fun fiboRecursiv() {
         assertEquals(1, fib(1))
         assertEquals(1, fib(2))
         assertEquals(2, fib(3))

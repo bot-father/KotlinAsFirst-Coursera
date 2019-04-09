@@ -66,7 +66,15 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun digitNumber(n: Int): Int = TODO()
+fun digitNumber(n: Int): Int {
+    var i = 1
+    var num = n
+    while(num > 9){
+        i++
+        num /= 10
+    }
+    return i
+}
 
 /**
  * Простая
@@ -74,7 +82,25 @@ fun digitNumber(n: Int): Int = TODO()
  * Найти число Фибоначчи из ряда 1, 1, 2, 3, 5, 8, 13, 21, ... с номером n.
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
-fun fib(n: Int): Int = TODO()
+fun fiboRecursiv(n: Int): Int = when(n){
+    1 -> 1
+    2 -> 1
+    else -> fib(n - 1) + fib(n - 2)
+}
+
+fun fib(n: Int): Int {
+    var result = 0
+    var fiboPrev = 1
+    var fiboAct = 1
+    if(n == 1) return 1
+    else if(n == 2) return 1
+    else{
+    for(i in 3..n){
+        result = fiboAct + fiboPrev
+        fiboPrev = fiboAct
+        fiboAct = result
+    }}
+return result}
 
 /**
  * Простая
