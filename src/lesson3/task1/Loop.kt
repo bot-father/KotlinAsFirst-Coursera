@@ -108,21 +108,40 @@ return result}
  * Для заданных чисел m и n найти наименьшее общее кратное, то есть,
  * минимальное число k, которое делится и на m и на n без остатка
  */
-fun lcm(m: Int, n: Int): Int = TODO()
+fun lcm(m: Int, n: Int): Int {
+    val max= m * n
+    var result = 0
+    for(i in 2..max){
+        if(i % m == 0 && i % n == 0){
+            result = i
+            break}
+    }
+    return result}
 
 /**
  * Простая
  *
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
-fun minDivisor(n: Int): Int = TODO()
+fun minDivisor(n: Int): Int {
+    var result = 0
+    for(i in 2..n){
+        if(n % i == 0){
+            result = i
+            break
+        }
+    }
+return result}
 
 /**
  * Простая
  *
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
-fun maxDivisor(n: Int): Int = TODO()
+fun maxDivisor(n: Int): Int {
+    var result = n - 1
+    while (n % result != 0) result--
+    return result}
 
 /**
  * Простая
