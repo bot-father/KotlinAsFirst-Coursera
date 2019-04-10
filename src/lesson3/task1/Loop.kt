@@ -1,7 +1,7 @@
 @file:Suppress("UNUSED_PARAMETER")
 package lesson3.task1
 
-import kotlin.math.sqrt
+import kotlin.math.*
 
 /**
  * Пример
@@ -92,14 +92,15 @@ fun fib(n: Int): Int {
     var result = 0
     var fiboPrev = 1
     var fiboAct = 1
-    if(n == 1) return 1
-    else if(n == 2) return 1
-    else{
-      for(i in 3..n){
-        result = fiboAct + fiboPrev
-        fiboPrev = fiboAct
-        fiboAct = result
-      }}
+    when (n) {
+        1 -> return 1
+        2 -> return 1
+        else -> for(i in 3..n){
+            result = fiboAct + fiboPrev
+            fiboPrev = fiboAct
+            fiboAct = result
+        }
+    }
 return result}
 
 /**
@@ -171,7 +172,7 @@ return result}
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
     var result = false
-    var sum = 0
+    var sum: Int
     if(m > 2147395600) return false //последний корень перед Int.MAX_VALUE
     for (i in m..n){
         sum = 0
@@ -203,7 +204,15 @@ return result}
  * Написать функцию, которая находит, сколько шагов требуется для
  * этого для какого-либо начального X > 0.
  */
-fun collatzSteps(x: Int): Int = TODO()
+fun collatzSteps(x: Int): Int {
+    var xNext = x
+    var count = 0
+    while(xNext != 1) {
+        if (xNext % 2 == 0) xNext /= 2
+        else xNext = 3 * xNext + 1
+        count++
+    }
+return count}
 
 /**
  * Средняя
@@ -212,7 +221,31 @@ fun collatzSteps(x: Int): Int = TODO()
  * sin(x) = x - x^3 / 3! + x^5 / 5! - x^7 / 7! + ...
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
-fun sin(x: Double, eps: Double): Double = TODO()
+
+fun sin(x: Double, eps: Double): Double {
+    var glied = 1.0
+    var gliedNum = 3
+    val xCut = x % (2 * PI)
+    var xHoch = xCut * xCut * xCut
+    var xFaktorial = 6.0
+    var result :Double = xCut
+    while (abs(glied) > eps){
+        glied = xHoch / xFaktorial
+        result -= glied
+        xHoch *= xCut * xCut
+        gliedNum++
+        xFaktorial *= gliedNum
+        gliedNum++
+        xFaktorial *= gliedNum
+        glied = xHoch / xFaktorial
+        result += glied
+        xHoch *= xCut * xCut
+        gliedNum++
+        xFaktorial *= gliedNum
+        gliedNum++
+        xFaktorial *= gliedNum
+    }
+return result}
 
 /**
  * Средняя
@@ -221,7 +254,30 @@ fun sin(x: Double, eps: Double): Double = TODO()
  * cos(x) = 1 - x^2 / 2! + x^4 / 4! - x^6 / 6! + ...
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
-fun cos(x: Double, eps: Double): Double = TODO()
+fun cos(x: Double, eps: Double): Double {
+    var glied = 1.0
+    var gliedNum = 2
+    val xCut = x % (2 * PI)
+    var xHoch = xCut * xCut
+    var xFaktorial = 2.0
+    var result = 1.0
+    while (abs(glied) > eps){
+        glied = xHoch / xFaktorial
+        result -= glied
+        xHoch *= xCut * xCut
+        gliedNum++
+        xFaktorial *= gliedNum
+        gliedNum++
+        xFaktorial *= gliedNum
+        glied = xHoch / xFaktorial
+        result += glied
+        xHoch *= xCut * xCut
+        gliedNum++
+        xFaktorial *= gliedNum
+        gliedNum++
+        xFaktorial *= gliedNum
+    }
+    return result}
 
 /**
  * Средняя

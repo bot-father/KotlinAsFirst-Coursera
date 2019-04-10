@@ -64,8 +64,8 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  */
 fun ageDescription(age: Int): String =
     when{
-        age > 4 && age < 21 -> "$age лет"
-        age % 10 > 1 && age % 10 < 5 -> "$age года"
+        age in 5..20 -> "$age лет"
+        age % 10 in 2..4 -> "$age года"
         age % 10 > 4 -> "$age лет"
         else -> "$age год"
     }
@@ -82,8 +82,8 @@ fun timeForHalfWay(t1: Double, v1: Double,
                    t3: Double, v3: Double): Double {
     val halfpath : Double = (t1 * v1 + t2 * v2 + t3 * v3) / 2
     if(t1 * v1 > halfpath) return halfpath / v1
-    if(t1 * v1 + t2 * v2 > halfpath) return t1 + (halfpath - t1 * v1) / v2
-    else return t1 + t2 + (halfpath - t1 * v1 - t2 * v2) / v3
+    return if(t1 * v1 + t2 * v2 > halfpath) t1 + (halfpath - t1 * v1) / v2
+    else t1 + t2 + (halfpath - t1 * v1 - t2 * v2) / v3
 }
 
 /**
@@ -98,7 +98,7 @@ fun timeForHalfWay(t1: Double, v1: Double,
 fun whichRookThreatens(kingX: Int, kingY: Int,
                        rookX1: Int, rookY1: Int,
                        rookX2: Int, rookY2: Int): Int{
-    var bang : Int = 0
+    var bang = 0
     if(kingX == rookX1 || kingY == rookY1) bang = 1 // угроза от ладьи 1
     if(kingX == rookX2 || kingY == rookY2) bang += 2 // угроза от ладьи 2
     return bang}
@@ -115,7 +115,7 @@ fun whichRookThreatens(kingX: Int, kingY: Int,
 fun rookOrBishopThreatens(kingX: Int, kingY: Int,
                           rookX: Int, rookY: Int,
                           bishopX: Int, bishopY: Int): Int {
-    var bang : Int = 0
+    var bang = 0
     if(kingX == rookX || kingY == rookY) bang = 1 // угроза от ладьи
     if(kingX - kingY == bishopX - bishopY || kingX + kingY == bishopX + bishopY) bang += 2 // угроза от слона
     return bang}
@@ -132,16 +132,16 @@ fun pifagor(gipo: Double, katet1: Double,katet2: Double): Int { //Пифагор
     val katets = katet1 * katet1 + katet2 * katet2
     val gipoquadrat = gipo * gipo
     if(katets == gipoquadrat) return 1
-    if(katets > gipoquadrat) return 0
-    else return 2
+    return if(katets > gipoquadrat) 0
+    else 2
 }
 
 fun triangleKind(a: Double, b: Double, c: Double): Int {
     val sum : Double = (a + b + c) / 2
     if(sum < a || sum < b || sum < c) return -1
     if(a > b && a > c) return pifagor(a, b, c) //поиск длиннейшей стороны
-    if(b > a && b > c) return pifagor(b, a, c)
-    else return pifagor(c, b, a)
+    return if(b > a && b > c) pifagor(b, a, c)
+    else pifagor(c, b, a)
 }
 
 /**
@@ -154,8 +154,8 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  */
 fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = when{
     b < c -> -1
-    b >= c && c >= a && d >= b -> b - c
-    d >= a && c <= a && b >= d -> d - a
+    c in a..b && d >= b -> b - c
+    a in c..d && b >= d -> d - a
     a <= c && d <= b -> d - c
     a >= c && d >= b -> b - a
     else -> -1

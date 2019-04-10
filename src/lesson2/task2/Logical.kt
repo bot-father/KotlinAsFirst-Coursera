@@ -1,8 +1,7 @@
 @file:Suppress("UNUSED_PARAMETER")
 package lesson2.task2
-import kotlin.math.sqrt
 import lesson1.task1.sqr
-import lesson1.task1.travelMinutes
+import kotlin.math.sqrt
 
 /**
  * Пример
@@ -87,13 +86,13 @@ fun minimal(a: Int, b: Int, c: Int) = when{ //возвращает миниму�
 fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean  {
     // Вторая по величине грань
     val brickSecondSide = when{
-        a <= b && b <= c -> b
-        c <= b && b <= a -> b
-        b <= c && c <= a -> c
-        a <= c && c <= b -> c
+        b in a..c -> b
+        b in c..a -> b
+        c in b..a -> c
+        c in a..b -> c
         else -> a
     }
     //Проверка впихуемости
-    if(r > s) return r >= brickSecondSide && s >= minimal(a, b, c)
-    else return r >= minimal(a, b, c) && s >= brickSecondSide
+    return if(r > s) r >= brickSecondSide && s >= minimal(a, b, c)
+    else r >= minimal(a, b, c) && s >= brickSecondSide
 }
