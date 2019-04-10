@@ -323,7 +323,15 @@ return n == result}
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun hasDifferentDigits(n: Int): Boolean = TODO()
+fun hasDifferentDigits(n: Int): Boolean {
+    var numb = n / 10
+    var result = n % 10
+    do{
+        if(numb % 10 != result) return true
+        result = numb % 10
+        numb /= 10
+    }while(numb > 0)
+return false}
 
 /**
  * Сложная
