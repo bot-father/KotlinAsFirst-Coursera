@@ -95,11 +95,11 @@ fun fib(n: Int): Int {
     if(n == 1) return 1
     else if(n == 2) return 1
     else{
-    for(i in 3..n){
+      for(i in 3..n){
         result = fiboAct + fiboPrev
         fiboPrev = fiboAct
         fiboAct = result
-    }}
+      }}
 return result}
 
 /**
@@ -150,7 +150,17 @@ fun maxDivisor(n: Int): Int {
  * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
-fun isCoPrime(m: Int, n: Int): Boolean = TODO()
+fun isCoPrime(m: Int, n: Int): Boolean {
+    val min = when{m < n -> m
+    else -> n}
+    var result = true
+    for (i in 2..min){
+        if(n % i == 0  && m % i == 0){
+            result = false
+            break
+        }
+    }
+return result}
 
 /**
  * Простая
@@ -159,7 +169,23 @@ fun isCoPrime(m: Int, n: Int): Boolean = TODO()
  * то есть, существует ли такое целое k, что m <= k*k <= n.
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
-fun squareBetweenExists(m: Int, n: Int): Boolean = TODO()
+fun squareBetweenExists(m: Int, n: Int): Boolean {
+    var result = false
+    var sum = 0
+    if(m > 2147395600) return false //последний корень перед Int.MAX_VALUE
+    for (i in m..n){
+        sum = 0
+        for (j in 1..i step 2){ //проверка является ли квадратом (суммой нечётных чисел)
+            sum += j
+            if(sum == i){
+                result = true
+                break
+            }
+            if(sum > i) break
+        }
+    if(result) break
+    }
+return result}
 
 /**
  * Средняя
