@@ -342,7 +342,24 @@ return false}
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun squareSequenceDigit(n: Int): Int = TODO()
+fun squareSequenceDigit(n: Int): Int {
+    var digitNumber = 0
+    var count = 0
+    var quadrat :Int
+    do {
+        count++
+        quadrat = count * count // вычисляем квадраты
+        do{
+            quadrat /= 10
+            digitNumber++
+        }while (quadrat != 0) // определяем длину полученной последовательности
+    }while (n > digitNumber) // сравниваем с n
+    quadrat = count * count
+    for(i in n..digitNumber){ // выбираем из последнего квадрата нужную цифру
+        count = quadrat % 10
+        quadrat /= 10
+    }
+return count}
 
 /**
  * Сложная
