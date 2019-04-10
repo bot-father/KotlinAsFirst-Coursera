@@ -286,7 +286,15 @@ fun cos(x: Double, eps: Double): Double {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun revert(n: Int): Int = TODO()
+fun revert(n: Int): Int {
+    var numb = n
+    var result = 0
+    do{
+        result *= 10
+        result += numb % 10
+        numb /= 10
+    }while(numb > 0)
+return result}
 
 /**
  * Средняя
@@ -297,7 +305,15 @@ fun revert(n: Int): Int = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun isPalindrome(n: Int): Boolean = TODO()
+fun isPalindrome(n: Int): Boolean {
+    var numb = n
+    var result = 0
+    do{
+        result *= 10
+        result += numb % 10
+        numb /= 10
+    }while(numb > 0)
+return n == result}
 
 /**
  * Средняя
