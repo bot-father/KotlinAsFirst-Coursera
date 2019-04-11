@@ -154,15 +154,10 @@ fun maxDivisor(n: Int): Int {
 fun isCoPrime(m: Int, n: Int): Boolean {
     val min = when{m < n -> m
     else -> n}
-    var result = true
     for (i in 2..min){
-        if(n % i == 0  && m % i == 0){
-            result = false
-            break
-        }
+        if(n % i == 0  && m % i == 0) return false
     }
-return result}
-
+    return true}
 /**
  * Простая
  *
@@ -376,12 +371,12 @@ fun fibSequenceDigit(n: Int): Int {
     var fibonator :Int
     do{
         count++
-        fibonator = fib(count)
+        fibonator = fib(count) //вычисляем последовательно числа Фибоначчи
         do{
             fibonator /= 10
             digitNumber++
         }while (fibonator != 0) // определяем длину полученной последовательности
-    }while (n > digitNumber)
+    }while (n > digitNumber) // сравниваем с n
     fibonator = fib(count)
     for(i in n..digitNumber){ // выбираем из последнего числа Фибоначчи нужную цифру
         count = fibonator % 10

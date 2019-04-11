@@ -150,6 +150,12 @@ class Tests {
     @Test
     @Tag("Easy")
     fun isCoPrime() {
+        var count = 0
+        for(i in 3..9) {
+            for(j in 5..11){
+                if(isCoPrime(i, j)) count++
+            }}
+        assertEquals(32, count)
         assertTrue(isCoPrime(25, 49))
         assertFalse(isCoPrime(6, 8))
         assertTrue(isCoPrime(17, 97))
