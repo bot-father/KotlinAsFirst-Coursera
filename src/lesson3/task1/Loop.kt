@@ -370,4 +370,22 @@ return count}
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun fibSequenceDigit(n: Int): Int = TODO()
+fun fibSequenceDigit(n: Int): Int {
+    var digitNumber = 0
+    var count = 0
+    var fibonator :Int
+    do{
+        count++
+        fibonator = fib(count)
+        do{
+            fibonator /= 10
+            digitNumber++
+        }while (fibonator != 0) // определяем длину полученной последовательности
+    }while (n > digitNumber)
+    fibonator = fib(count)
+    for(i in n..digitNumber){ // выбираем из последнего числа Фибоначчи нужную цифру
+        count = fibonator % 10
+        fibonator /= 10
+    }
+return count}
+
