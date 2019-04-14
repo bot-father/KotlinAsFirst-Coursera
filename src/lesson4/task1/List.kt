@@ -3,9 +3,9 @@
 package lesson4.task1
 
 import lesson1.task1.discriminant
+import lesson3.task1.isPrime
 import kotlin.math.pow
 import kotlin.math.sqrt
-import kotlin.reflect.jvm.internal.impl.descriptors.deserialization.PlatformDependentDeclarationFilter
 
 /**
  * Пример
@@ -204,7 +204,22 @@ fun accumulate(list: MutableList<Double>): MutableList<Double> { //6
  * Результат разложения вернуть в виде списка множителей, например 75 -> (3, 5, 5).
  * Множители в списке должны располагаться по возрастанию.
  */
-fun factorize(n: Int): List<Int> = TODO()
+fun factorize(n: Int): List<Int> { //7
+    var ishod = n
+    val result = mutableListOf<Int>()
+    if(isPrime(n)){
+        result.add(n)
+        return result
+    }
+    do{
+        for( i in 2..ishod)
+        if(isPrime(i)){
+            if (ishod % i == 0){
+               result.add(i)
+               ishod /= i
+               break}}}while (!isPrime(ishod))
+    result.add(ishod)
+return result}
 
 /**
  * Сложная
@@ -213,7 +228,22 @@ fun factorize(n: Int): List<Int> = TODO()
  * Результат разложения вернуть в виде строки, например 75 -> 3*5*5
  * Множители в результирующей строке должны располагаться по возрастанию.
  */
-fun factorizeToString(n: Int): String = TODO()
+fun factorizeToString(n: Int): String { //8
+    var ishod = n
+    val result = mutableListOf<Int>()
+    if(isPrime(n)){
+        result.add(n)
+        return result.joinToString(separator = "*")
+    }
+    do{
+        for( i in 2..ishod)
+            if(isPrime(i)){
+                if (ishod % i == 0){
+                    result.add(i)
+                    ishod /= i
+                    break}}}while (!isPrime(ishod))
+    result.add(ishod)
+    return result.joinToString(separator = "*")}
 
 /**
  * Средняя
