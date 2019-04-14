@@ -283,10 +283,10 @@ fun convertToString(n: Int, base: Int): String { //10
         rest /= base
     }while (rest > base)
     if(rest != 0) result.add(rest)
-    for (i in 0 until result.size) endResult.add(when{
+    for (i in result.size - 1 downTo 0) endResult.add(when{
         result[i] < 10 -> (48 + result[i]).toChar()
         else -> (87 + result[i]).toChar()})
-    return endResult.reversed().joinToString(separator = "")}
+    return endResult.joinToString(separator = "")}
 
 /**
  * Средняя
@@ -315,7 +315,20 @@ return result}
  * 10 -> a, 11 -> b, 12 -> c и так далее.
  * Например: str = "13c", base = 14 -> 250
  */
-fun decimalFromString(str: String, base: Int): Int = TODO()
+fun decimalFromString(str: String, base: Int): Int { //12
+    var i = str.length
+    var multiplicator = 1
+    var result = 0
+    do{
+        i--
+        result += when{
+            str[i].toInt() < 58 -> str[i].toInt() - 48
+            else -> str[i].toInt() - 87
+        } * multiplicator
+        multiplicator *= base
+    }while (i != 0)
+    return result}
+
 
 /**
  * Сложная
@@ -334,4 +347,144 @@ fun roman(n: Int): String = TODO()
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
-fun russian(n: Int): String = TODO()
+fun spaceRemover(inString: String): String{ //14
+    var result = ""
+    for (i in 1 until inString.length){
+        if(inString[i - 1] != ' ') result += inString[i -1]
+        else if(inString[i] != ' ') result += inString[i -1]}
+    if(inString[inString.length - 1] != ' ') result += inString[inString.length - 1]
+return result}
+
+fun russian(n: Int): String{
+    var number = n
+    val result  = mutableListOf<String>()
+// единицы
+    result.add(when(number % 100){
+        1 -> "один"
+        2 -> "два"
+        3 -> "три"
+        4 -> "четыре"
+        5 -> "пять"
+        6 -> "шесть"
+        7 -> "семь"
+        8 -> "восемь"
+        9 -> "девять"
+        10 -> "десять"
+        11 -> "одинадцать"
+        12 -> "двенадцать"
+        13 -> "тринадцать"
+        14 -> "четырнадцать"
+        15 -> "пятнадцать"
+        16 -> "шстнадцать"
+        17 -> "семнадцать"
+        18 -> "восемьнадцать"
+        19 -> "девятнадцать"
+        else -> when(number % 10){
+            1 -> "один"
+            2 -> "два"
+            3 -> "три"
+            4 -> "четыре"
+            5 -> "пять"
+            6 -> "шесть"
+            7 -> "семь"
+            8 -> "восемь"
+            9 -> "девять"
+            else -> ""
+        }
+    })
+    //десятки
+    number /= 10
+    if(number == 0) return result.joinToString(separator = " ").trim()
+    result.add(when(number % 10){
+        2 -> "двадцать"
+        3 -> "тридцать"
+        4 -> "сорок"
+        5 -> "пятьдесят"
+        6 -> "шестьдесят"
+        7 -> "семьдесят"
+        8 -> "восемьдесят"
+        9 -> "девяносто"
+        else -> ""
+    })
+    //сотни
+    number /= 10
+    if(number == 0)     return spaceRemover(result.reversed().joinToString(separator = " ")).trim()
+    result.add(when(number % 10){
+        1 -> "сто"
+        2 -> "двести"
+        3 -> "триста"
+        4 -> "четыреста"
+        5 -> "пятьсот"
+        6 -> "шестьсот"
+        7 -> "семьсот"
+        8 -> "восемьсот"
+        9 -> "девятьсот"
+        else -> ""
+    })
+    //тысячи
+    number /= 10
+    if(number == 0)     return spaceRemover(result.reversed().joinToString(separator = " "))
+    result.add(when(number % 100){
+        1 -> "тысяча"
+        2 -> "две тысячи"
+        3 -> "три тысячи"
+        4 -> "четыре тысячи"
+        5 -> "пять тысяч"
+        6 -> "шесть тысяч"
+        7 -> "семь тысяч"
+        8 -> "восемь тысяч"
+        9 -> "девять тысяч"
+        10 -> "десять тысяч"
+        11 -> "одинадцать тысяч"
+        12 -> "двенадцать тысяч"
+        13 -> "тринадцать тысяч"
+        14 -> "четырнадцать тысяч"
+        15 -> "пятнадцать тысяч"
+        16 -> "шстнадцать тысяч"
+        17 -> "семнадцать тысяч"
+        18 -> "восемьнадцать тысяч"
+        19 -> "девятнадцать тысяч"
+        else -> when(number % 10){
+            1 -> "тысяча"
+            2 -> "две тысячи"
+            3 -> "три тысячи"
+            4 -> "четыре тысячи"
+            5 -> "пять тысяч"
+            6 -> "шесть тысяч"
+            7 -> "семь тысяч"
+            8 -> "восемь тысяч"
+            9 -> "девять тысяч"
+            else -> "тысяч"}
+    })
+    //десятки тысяч
+            number /= 10
+        if(number == 0)     return spaceRemover(result.reversed().joinToString(separator = " "))
+                result.add(when(number % 10){
+            2 -> "двадцать"
+            3 -> "тридцать"
+            4 -> "сорок"
+            5 -> "пятьдесят"
+            6 -> "шестьдесят"
+            7 -> "семьдесят"
+            8 -> "восемьдесят"
+            9 -> "девяносто"
+            else -> ""
+        })
+    //сотни тысяч
+    number /= 10
+    if(number == 0)     return spaceRemover(result.reversed().joinToString(separator = " "))
+    result.add(when(number % 10){
+        1 -> "сто"
+        2 -> "двести"
+        3 -> "триста"
+        4 -> "четыреста"
+        5 -> "пятьсот"
+        6 -> "шестьсот"
+        7 -> "семьсот"
+        8 -> "восемьсот"
+        9 -> "девятьсот"
+        else -> ""
+    })
+    println(result)
+    return spaceRemover(result.reversed().joinToString(separator = " "))
+}
