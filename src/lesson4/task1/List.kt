@@ -338,7 +338,59 @@ fun decimalFromString(str: String, base: Int): Int { //12
  * 90 = XC, 100 = C, 400 = CD, 500 = D, 900 = CM, 1000 = M.
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
-fun roman(n: Int): String = TODO()
+fun roman(n: Int): String { //13
+    var number = n
+    val result = mutableListOf<String>()
+    if(n == 0) return ""
+    when(n % 10){
+        1 -> result.add("I")
+        2 -> result.add("II")
+        3 -> result.add("III")
+        4 -> result.add("IV")
+        5 -> result.add("V")
+        6 -> result.add("VI")
+        7 -> result.add("VII")
+        8 -> result.add("VIII")
+        9 -> result.add("IX")
+        else -> {}
+    }
+    number /= 10
+    if(number == 0) return result.joinToString(separator = "")
+    when(number % 10){
+        1 -> result.add("X")
+        2 -> result.add("XX")
+        3 -> result.add("XXX")
+        4 -> result.add("XL")
+        5 -> result.add("L")
+        6 -> result.add("LX")
+        7 -> result.add("LXX")
+        8 -> result.add("LXXX")
+        9 -> result.add("XC")
+        else -> {}
+    }
+    number /= 10
+    if(number == 0) return result.reversed().joinToString(separator = "")
+    when(number % 10){
+        1 -> result.add("C")
+        2 -> result.add("CC")
+        3 -> result.add("CCC")
+        4 -> result.add("CD")
+        5 -> result.add("D")
+        6 -> result.add("DC")
+        7 -> result.add("DCC")
+        8 -> result.add("DCCC")
+        9 -> result.add("CM")
+        else -> {}
+    }
+    number /= 10
+    if(number == 0) return result.reversed().joinToString(separator = "")
+    when(number % 10){
+        1 -> result.add("M")
+        2 -> result.add("MM")
+        3 -> result.add("MMM")
+        else -> {}
+    }
+return result.reversed().joinToString(separator = "")}
 
 /**
  * Очень сложная
@@ -347,144 +399,134 @@ fun roman(n: Int): String = TODO()
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
-fun spaceRemover(inString: String): String{ //14
-    var result = ""
-    for (i in 1 until inString.length){
-        if(inString[i - 1] != ' ') result += inString[i -1]
-        else if(inString[i] != ' ') result += inString[i -1]}
-    if(inString[inString.length - 1] != ' ') result += inString[inString.length - 1]
-return result}
 
-fun russian(n: Int): String{
+fun russian(n: Int): String{ //14
     var number = n
     val result  = mutableListOf<String>()
 // единицы
-    result.add(when(number % 100){
-        1 -> "один"
-        2 -> "два"
-        3 -> "три"
-        4 -> "четыре"
-        5 -> "пять"
-        6 -> "шесть"
-        7 -> "семь"
-        8 -> "восемь"
-        9 -> "девять"
-        10 -> "десять"
-        11 -> "одинадцать"
-        12 -> "двенадцать"
-        13 -> "тринадцать"
-        14 -> "четырнадцать"
-        15 -> "пятнадцать"
-        16 -> "шстнадцать"
-        17 -> "семнадцать"
-        18 -> "восемьнадцать"
-        19 -> "девятнадцать"
+    when(number % 100){
+        1 -> result.add("один")
+        2 -> result.add("два")
+        3 -> result.add("три")
+        4 -> result.add("четыре")
+        5 -> result.add("пять")
+        6 -> result.add("шесть")
+        7 -> result.add("семь")
+        8 -> result.add("восемь")
+        9 -> result.add("девять")
+        10 -> result.add("десять")
+        11 -> result.add("одинадцать")
+        12 -> result.add("двенадцать")
+        13 -> result.add("тринадцать")
+        14 -> result.add("четырнадцать")
+        15 -> result.add("пятнадцать")
+        16 -> result.add("шстнадцать")
+        17 -> result.add("семнадцать")
+        18 -> result.add("восемьнадцать")
+        19 -> result.add("девятнадцать")
         else -> when(number % 10){
-            1 -> "один"
-            2 -> "два"
-            3 -> "три"
-            4 -> "четыре"
-            5 -> "пять"
-            6 -> "шесть"
-            7 -> "семь"
-            8 -> "восемь"
-            9 -> "девять"
-            else -> ""
-        }
-    })
+            1 -> result.add("один")
+            2 -> result.add("два")
+            3 -> result.add("три")
+            4 -> result.add("четыре")
+            5 -> result.add("пять")
+            6 -> result.add("шесть")
+            7 -> result.add("семь")
+            8 -> result.add("восемь")
+            9 -> result.add("девять")
+            else -> {}
+        }}
     //десятки
     number /= 10
-    if(number == 0) return result.joinToString(separator = " ").trim()
-    result.add(when(number % 10){
-        2 -> "двадцать"
-        3 -> "тридцать"
-        4 -> "сорок"
-        5 -> "пятьдесят"
-        6 -> "шестьдесят"
-        7 -> "семьдесят"
-        8 -> "восемьдесят"
-        9 -> "девяносто"
-        else -> ""
-    })
+    if(number == 0) return result.joinToString(separator = " ")
+    when(number % 10){
+        2 -> result.add("двадцать")
+        3 -> result.add("тридцать")
+        4 -> result.add("сорок")
+        5 -> result.add("пятьдесят")
+        6 -> result.add("шестьдесят")
+        7 -> result.add("семьдесят")
+        8 -> result.add("восемьдесят")
+        9 -> result.add("девяносто")
+        else -> {}
+    }
     //сотни
     number /= 10
-    if(number == 0)     return spaceRemover(result.reversed().joinToString(separator = " ")).trim()
-    result.add(when(number % 10){
-        1 -> "сто"
-        2 -> "двести"
-        3 -> "триста"
-        4 -> "четыреста"
-        5 -> "пятьсот"
-        6 -> "шестьсот"
-        7 -> "семьсот"
-        8 -> "восемьсот"
-        9 -> "девятьсот"
-        else -> ""
-    })
+    if(number == 0) return result.reversed().joinToString(separator = " ")
+    when(number % 10){
+        1 -> result.add("сто")
+        2 -> result.add("двести")
+        3 -> result.add("триста")
+        4 -> result.add("четыреста")
+        5 -> result.add("пятьсот")
+        6 -> result.add("шестьсот")
+        7 -> result.add("семьсот")
+        8 -> result.add("восемьсот")
+        9 -> result.add("девятьсот")
+        else -> {}
+    }
     //тысячи
     number /= 10
-    if(number == 0)     return spaceRemover(result.reversed().joinToString(separator = " "))
-    result.add(when(number % 100){
-        1 -> "тысяча"
-        2 -> "две тысячи"
-        3 -> "три тысячи"
-        4 -> "четыре тысячи"
-        5 -> "пять тысяч"
-        6 -> "шесть тысяч"
-        7 -> "семь тысяч"
-        8 -> "восемь тысяч"
-        9 -> "девять тысяч"
-        10 -> "десять тысяч"
-        11 -> "одинадцать тысяч"
-        12 -> "двенадцать тысяч"
-        13 -> "тринадцать тысяч"
-        14 -> "четырнадцать тысяч"
-        15 -> "пятнадцать тысяч"
-        16 -> "шстнадцать тысяч"
-        17 -> "семнадцать тысяч"
-        18 -> "восемьнадцать тысяч"
-        19 -> "девятнадцать тысяч"
+    if(number == 0) return result.reversed().joinToString(separator = " ")
+when(number % 100){
+        1 -> result.add("тысяча")
+        2 -> result.add("две тысячи")
+        3 -> result.add("три тысячи")
+        4 -> result.add("четыре тысячи")
+        5 -> result.add("пять тысяч")
+        6 -> result.add("шесть тысяч")
+        7 -> result.add("семь тысяч")
+        8 -> result.add("восемь тысяч")
+        9 -> result.add("девять тысяч")
+        10 -> result.add("десять тысяч")
+        11 -> result.add("одинадцать тысяч")
+        12 -> result.add("двенадцать тысяч")
+        13 -> result.add("тринадцать тысяч")
+        14 -> result.add("четырнадцать тысяч")
+        15 -> result.add("пятнадцать тысяч")
+        16 -> result.add("шестнадцать тысяч")
+        17 -> result.add("семнадцать тысяч")
+        18 -> result.add("восемьнадцать тысяч")
+        19 -> result.add("девятнадцать тысяч")
         else -> when(number % 10){
-            1 -> "тысяча"
-            2 -> "две тысячи"
-            3 -> "три тысячи"
-            4 -> "четыре тысячи"
-            5 -> "пять тысяч"
-            6 -> "шесть тысяч"
-            7 -> "семь тысяч"
-            8 -> "восемь тысяч"
-            9 -> "девять тысяч"
-            else -> "тысяч"}
-    })
+            1 -> result.add("тысяча")
+            2 -> result.add("две тысячи")
+            3 -> result.add("три тысячи")
+            4 -> result.add("четыре тысячи")
+            5 -> result.add("пять тысяч")
+            6 -> result.add("шесть тысяч")
+            7 -> result.add("семь тысяч")
+            8 -> result.add("восемь тысяч")
+            9 -> result.add("девять тысяч")
+            else -> result.add("тысяч")}
+    }
     //десятки тысяч
-            number /= 10
-        if(number == 0)     return spaceRemover(result.reversed().joinToString(separator = " "))
-                result.add(when(number % 10){
-            2 -> "двадцать"
-            3 -> "тридцать"
-            4 -> "сорок"
-            5 -> "пятьдесят"
-            6 -> "шестьдесят"
-            7 -> "семьдесят"
-            8 -> "восемьдесят"
-            9 -> "девяносто"
-            else -> ""
-        })
+    number /= 10
+    if(number == 0) return result.reversed().joinToString(separator = " ")
+    when(number % 10){
+        2 -> result.add("двадцать")
+        3 -> result.add("тридцать")
+        4 -> result.add("сорок")
+        5 -> result.add("пятьдесят")
+        6 -> result.add("шестьдесят")
+        7 -> result.add("семьдесят")
+        8 -> result.add("восемьдесят")
+        9 -> result.add("девяносто")
+        else -> {}
+    }
     //сотни тысяч
     number /= 10
-    if(number == 0)     return spaceRemover(result.reversed().joinToString(separator = " "))
-    result.add(when(number % 10){
-        1 -> "сто"
-        2 -> "двести"
-        3 -> "триста"
-        4 -> "четыреста"
-        5 -> "пятьсот"
-        6 -> "шестьсот"
-        7 -> "семьсот"
-        8 -> "восемьсот"
-        9 -> "девятьсот"
-        else -> ""
-    })
-    println(result)
-    return spaceRemover(result.reversed().joinToString(separator = " "))
+    if(number == 0) return result.reversed().joinToString(separator = " ")
+when(number % 10){
+        1 -> result.add("сто")
+        2 -> result.add("двести")
+        3 -> result.add("триста")
+        4 -> result.add("четыреста")
+        5 -> result.add("пятьсот")
+        6 -> result.add("шестьсот")
+        7 -> result.add("семьсот")
+        8 -> result.add("восемьсот")
+        9 -> result.add("девятьсот")
+        else -> {}}
+    return result.reversed().joinToString(separator = " ")
 }
