@@ -120,7 +120,7 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
 fun abs(v: List<Double>): Double { //1
     var result = 0.0
     if(v.isEmpty()) return result
-    for(i in 0 until v.size) result += v[i] * v[i]
+    result = v.fold(0.0, { total, next -> total + next * next })
     return sqrt(result)
 }
 
@@ -130,9 +130,9 @@ fun abs(v: List<Double>): Double { //1
  * Рассчитать среднее арифметическое элементов списка list. Вернуть 0.0, если список пуст
  */
 fun mean(list: List<Double>): Double { //2
-    var result = 0.0
+    val result: Double
     if(list.isEmpty()) return 0.0
-    for(i in 0 until list.size) result += list[i]
+    result = list.reduce { total, next -> total + next }
     return result / list.size
 }
 
@@ -146,11 +146,11 @@ fun mean(list: List<Double>): Double { //2
  */
 fun center(list: MutableList<Double>): MutableList<Double> { //3
     var sum: Double
-    if(list.size == 0) return list
+    if(list.isEmpty()) return list
     sum = list.reduce { total, next -> total + next }
     sum /= list.size
     for(i in 0 until list.size) list[i] -= sum
-return list}
+    return list}
 
 /**
  * Средняя
@@ -158,12 +158,12 @@ return list}
  * Найти скалярное произведение двух векторов равной размерности,
  * представленные в виде списков a и b. Скалярное произведение считать по формуле:
  * C = a1b1 + a2b2 + ... + aNbN. Произведение пустых векторов считать равным 0.0.
- */
+*/
+
 fun times(a: List<Double>, b: List<Double>): Double { //4
     var result = 0.0
     for (i in 0 until a.size) result += a[i] * b[i]
-    return result
-}
+    return result}
 
 /**
  * Средняя
@@ -172,14 +172,14 @@ fun times(a: List<Double>, b: List<Double>): Double { //4
  * p(x) = p0 + p1*x + p2*x^2 + p3*x^3 + ... + pN*x^N.
  * Коэффициенты многочлена заданы списком p: (p0, p1, p2, p3, ..., pN).
  * Значение пустого многочлена равно 0.0 при любом x.
- */
+
+*/
+
 fun polynom(p: List<Double>, x: Double): Double{ //5
     var result = 0.0
     if(p.isEmpty()) return result
-    for (i in 0 until p.size){
-        result += p[i] * x.pow(i)
-    }
-return result}
+    result = p.foldIndexed(0.0, {i, sum, next -> sum + next * x.pow(i)})
+    return result}
 
 /**
  * Средняя
@@ -342,7 +342,7 @@ fun roman(n: Int): String { //13
     var number = n
     val result = mutableListOf<String>()
     if(n == 0) return ""
-    when(n % 10){
+    when(n % 10){ //единицы
         1 -> result.add("I")
         2 -> result.add("II")
         3 -> result.add("III")
@@ -356,7 +356,7 @@ fun roman(n: Int): String { //13
     }
     number /= 10
     if(number == 0) return result.joinToString(separator = "")
-    when(number % 10){
+    when(number % 10){ //десятки
         1 -> result.add("X")
         2 -> result.add("XX")
         3 -> result.add("XXX")
@@ -370,7 +370,7 @@ fun roman(n: Int): String { //13
     }
     number /= 10
     if(number == 0) return result.reversed().joinToString(separator = "")
-    when(number % 10){
+    when(number % 10){ //сотни
         1 -> result.add("C")
         2 -> result.add("CC")
         3 -> result.add("CCC")
