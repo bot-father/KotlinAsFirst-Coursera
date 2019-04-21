@@ -149,7 +149,7 @@ fun center(list: MutableList<Double>): MutableList<Double> { //3
     if(list.isEmpty()) return list
     sum = list.reduce { total, next -> total + next }
     sum /= list.size
-    for(i in 0 until list.size) list[i] -= sum
+    list.forEach{it - sum}
     return list}
 
 /**
