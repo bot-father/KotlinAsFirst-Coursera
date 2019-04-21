@@ -2,6 +2,7 @@
 
 package lesson5.task1
 
+import kotlin.math.absoluteValue
 import kotlin.Double as Double1
 
 /**
@@ -274,7 +275,9 @@ fun whoAreInBoth(a: List<String>, b: List<String>): List<String>{
  * Например:
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
-fun canBuildFrom(chars: List<Char>, word: String): Boolean = TODO()
+fun canBuildFrom(chars: List<Char>, word: String): Boolean {
+    for(letter in word) if(!chars.contains(letter)) return false
+return true}
 
 /**
  * Средняя
@@ -288,7 +291,12 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean = TODO()
  * Например:
  *   extractRepeats(listOf("a", "b", "a")) -> mapOf("a" to 2)
  */
-fun extractRepeats(list: List<String>): Map<String, Int> = TODO()
+fun extractRepeats(list: List<String>): Map<String, Int> {
+    val result = mutableMapOf<String, Int>()
+    list.forEach {
+        if(result.containsKey(it)) result[it] = 1 + result.getValue(it)
+        else result[it] = 1}
+return result.filter{it.value != 1}}
 
 /**
  * Средняя
