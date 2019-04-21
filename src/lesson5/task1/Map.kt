@@ -115,7 +115,7 @@ return resultMap}
  */
 fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
     val result = mutableMapOf<Int, MutableList<String>>()
-    for (item in grades){
+    grades.forEach { item ->
         if(result.containsKey(item.value)) result[item.value]?.add(item.key)
         else result.put(item.value, mutableListOf(item.key))
     }
@@ -131,7 +131,12 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "z", "b" to "sweet")) -> true
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "zee", "b" to "sweet")) -> false
  */
-fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = TODO()
+fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
+a.forEach{
+    if(!b.containsKey(it.key)) return false
+    if(b[it.key] != it.value) return false
+}
+return true}
 
 /**
  * Средняя
@@ -143,7 +148,14 @@ fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = TODO()
  *   averageStockPrice(listOf("MSFT" to 100.0, "MSFT" to 200.0, "NFLX" to 40.0))
  *     -> mapOf("MSFT" to 150.0, "NFLX" to 40.0)
  */
-fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> = TODO()
+fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
+    val result = mutableMapOf<String, Double>()
+    stockPrices.forEach{
+    if (result.containsKey(it.first)) result[it.first] = (result.getValue(it.first) + it.second) / 2
+    else result.put(it.first, it.second)
+    }
+    return result
+}
 
 /**
  * Средняя
