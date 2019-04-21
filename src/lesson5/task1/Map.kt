@@ -2,6 +2,8 @@
 
 package lesson5.task1
 
+import kotlin.Double as Double1
+
 /**
  * Пример
  *
@@ -11,7 +13,7 @@ package lesson5.task1
  */
 fun shoppingListCost(
         shoppingList: List<String>,
-        costs: Map<String, Double>): Double {
+        costs: Map<String, Double1>): Double1 {
     var totalCost = 0.0
 
     for (item in shoppingList) {
@@ -97,9 +99,9 @@ fun buildWordSet(text: List<String>): MutableSet<String> {
 fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String>{
     val resultMap = mutableMapOf<String, String>()
     resultMap.putAll(mapA)
-    for(item in mapB){
-        if(mapA.containsKey(item.key) && mapA.getValue(item.key) != item.value) resultMap.put(item.key, mapA.getValue(item.key) + ", " + item.value)
-        else resultMap.put(item.key, item.value)
+    mapB.forEach {
+        if(mapA.containsKey(it.key) && mapA.getValue(it.key) != it.value) resultMap[it.key] = mapA.getValue(it.key) + ", " + it.value
+        else resultMap[it.key] = it.value
     }
 return resultMap}
 
@@ -117,7 +119,7 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
     val result = mutableMapOf<Int, MutableList<String>>()
     grades.forEach { item ->
         if(result.containsKey(item.value)) result[item.value]?.add(item.key)
-        else result.put(item.value, mutableListOf(item.key))
+        else result[item.value] = mutableListOf(item.key)
     }
     return result}
 
@@ -148,11 +150,11 @@ return true}
  *   averageStockPrice(listOf("MSFT" to 100.0, "MSFT" to 200.0, "NFLX" to 40.0))
  *     -> mapOf("MSFT" to 150.0, "NFLX" to 40.0)
  */
-fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
-    val result = mutableMapOf<String, Double>()
+fun averageStockPrice(stockPrices: List<Pair<String, Double1>>): Map<String, Double1> {
+    val result = mutableMapOf<String, Double1>()
     stockPrices.forEach{
     if (result.containsKey(it.first)) result[it.first] = (result.getValue(it.first) + it.second) / 2
-    else result.put(it.first, it.second)
+    else result[it.first] = it.second
     }
     return result
 }
@@ -172,7 +174,19 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  *     "печенье"
  *   ) -> "Мария"
  */
-fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? = TODO()
+fun findCheapestStuff(stuff: Map<String, Pair<String, Double1>>, kind: String): String? {
+    var result: String? = null
+    var minPrice = 0.0
+    stuff.forEach { (s, pair) ->
+        if (pair.first == kind) if(result == null){
+                minPrice = pair.second
+                result = s
+            } else if(minPrice > pair.second){
+                minPrice = pair.second
+                result = s
+            }
+    }
+return result}
 
 /**
  * Сложная
@@ -198,7 +212,28 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  *          "Mikhail" to setOf("Sveta", "Marat")
  *        )
  */
-fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> = TODO()
+fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> {
+    val result = mutableMapOf<String, MutableSet<String>>()
+    val all = mutableListOf<String>()
+    friends.forEach{
+        if(!all.contains(it.key)) all.add(it.key)
+        it.value.forEach {es ->
+            if(!all.contains(es)) all.add(es)
+        }
+    }
+    all.forEach{ // первое рукопожатие
+        result[it] = mutableSetOf()
+    }
+    friends.forEach { (s, set) ->
+        set.forEach { result[s]?.add(it) }
+    }
+    friends.forEach { (s, set) -> // второе рукопожатие
+        set.forEach {secondFriend ->
+            if(result.containsKey(secondFriend))
+            friends[secondFriend]?.forEach { if(s != it) result[s]?.add(it) }
+            }
+    }
+return result}
 
 /**
  * Простая

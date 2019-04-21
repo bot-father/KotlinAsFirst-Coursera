@@ -195,6 +195,13 @@ class Tests {
                         "печенье"
                 )
         )
+        assertEquals(
+                "Орео",
+                findCheapestStuff(
+                        mapOf("Мария" to ("печенье" to 20.0), "Орео" to ("печенье" to 10.0), "Балтика" to ("пиво" to 100.0)),
+                        "печенье"
+                )
+        )
     }
 
     @Test
