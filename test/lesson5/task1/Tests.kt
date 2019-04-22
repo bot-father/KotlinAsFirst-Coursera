@@ -234,6 +234,22 @@ class Tests {
                         )
                 )
         )
+        assertEquals(
+                mapOf(
+                        "Marat" to setOf("Mikhail", "Sveta"),
+                        "Mikhail" to setOf("Sveta", "Marat"),
+                        "Sveta" to setOf("Marat", "Mikhail"),
+                        "Lena" to setOf("Mikhail", "Marat", "Sveta")
+                ),
+                propagateHandshakes(
+                        mapOf(
+                                "Marat" to setOf("Mikhail", "Sveta"),
+                                "Mikhail" to setOf("Sveta"),
+                                "Sveta" to setOf("Marat"),
+                                "Lena" to setOf("Mikhail", "Marat")
+                        )
+                )
+        )
     }
 
     @Test
@@ -274,6 +290,8 @@ class Tests {
         assertFalse(canBuildFrom(emptyList(), "foo"))
         assertTrue(canBuildFrom(listOf('a', 'b', 'o'), "baobab"))
         assertFalse(canBuildFrom(listOf('a', 'm', 'r'), "Marat"))
+        assertFalse(canBuildFrom(listOf('a', 'l', 'r'), "ararat"))
+        assertTrue(canBuildFrom(listOf('a', 's', 'i', 'n'), "asassin"))
     }
 
     @Test
@@ -288,6 +306,14 @@ class Tests {
                 extractRepeats(listOf("a", "b", "a"))
         )
         assertEquals(
+                mapOf("a" to 3),
+                extractRepeats(listOf("a", "b", "a", "k", "w", "a"))
+        )
+        assertEquals(
+                mapOf("a" to 2, "b" to 3),
+                extractRepeats(listOf("a", "b", "a", "b", "u", "b", "w"))
+        )
+        assertEquals(
                 emptyMap<String, Int>(),
                 extractRepeats(listOf("a", "b", "c"))
         )
@@ -299,6 +325,8 @@ class Tests {
         assertFalse(hasAnagrams(emptyList()))
         assertTrue(hasAnagrams(listOf("рот", "свет", "тор")))
         assertFalse(hasAnagrams(listOf("рот", "свет", "код", "дверь")))
+        assertTrue(hasAnagrams(listOf("топор", "топливо", "ропот", "корова")))
+        assertFalse(hasAnagrams(listOf("колбаса", "полотенце", "анаграмма", "экран")))
     }
 
     @Test
@@ -333,6 +361,13 @@ class Tests {
                 bagPacking(
                         mapOf("Кубок" to (500 to 2000), "Слиток" to (1000 to 5000)),
                         450
+                )
+        )
+        assertEquals(
+                setOf("Слиток"),
+                bagPacking(
+                        mapOf("Кубок" to (500 to 2000), "Слиток" to (1000 to 5000), "Самогон" to (500 to 100)),
+                        1001
                 )
         )
     }
