@@ -347,12 +347,28 @@ class Tests {
     }
 
     @Test
+    @Tag("Easy")
+    fun hi() {
+        assertEquals(2, hi(1))
+        assertEquals(4, hi(2))
+        assertEquals(8, hi(3))
+        assertEquals(16, hi(4))
+    }
+
+    @Test
     @Tag("Impossible")
     fun bagPacking() {
         assertEquals(
                 setOf("Кубок"),
                 bagPacking(
                         mapOf("Кубок" to (500 to 2000), "Слиток" to (1000 to 5000)),
+                        850
+                )
+        )
+        assertEquals(
+                setOf("Кубок", "Сыр"),
+                bagPacking(
+                        mapOf("Кубок" to (500 to 2000), "Слиток" to (1000 to 5000), "Сыр" to (50 to 20)),
                         850
                 )
         )

@@ -359,4 +359,38 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
  *     450
  *   ) -> emptySet()
  */
-fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> = TODO()
+
+fun hi(value: Int): Int{ //функция возведения 2 в степень Int
+    var result = 1
+    for (i in 1..value) result *= 2
+    return result}
+
+fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> {
+    val workList = mutableListOf<MutableMap<String, Int>>()
+    val helpList = treasures.keys.toList()
+    val result = mutableSetOf<String>()
+    var maxPrice = 0
+    var posMax = 0
+    //собрать все возможные комбинации в список workList
+    for (i in 0 until hi(treasures.size)){ //кол-во комбинаций - 2 в степени treasures.size
+        workList.add(mutableMapOf())
+        for (j in 0 until treasures.size){
+            if (i and hi(j) != 0) workList[i][helpList[j]] = treasures.getOrElse(helpList[j]) { 0 to 0 }.second // этот getOrElse чтобы на null не проверять
+        }
+    }
+    // теперь в workList все комбинации, выбираем наивыгоднейшую
+    workList.forEach {
+        var prices = 0
+        var weigth = 0
+        it.forEach { (key, i) ->
+            prices += i
+            weigth += treasures.getOrElse(key) { 0 to 0 }.first
+        }
+        if(prices > maxPrice && weigth < capacity){
+            maxPrice = prices
+            posMax = workList.indexOf(it)
+        }
+    }
+    //вернуть результат
+    workList[posMax].forEach { (s, _) -> result.add(s) }
+    return result}
