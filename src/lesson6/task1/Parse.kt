@@ -71,7 +71,44 @@ fun main(args: Array<String>) {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
  * входными данными.
  */
-fun dateStrToDigit(str: String): String = TODO()
+fun dateStrToDigit(str: String): String {
+    val parts = str.split(" ")
+    if (parts.size != 3) return ""
+    val day = parts[0].toInt()
+    val month = parts[1]
+    val year = parts[2].toInt()
+    val montDigit = when(month){
+        "января" -> 1
+        "февраля" -> 2
+        "марта" -> 3
+        "апреля" -> 4
+        "мая" -> 5
+        "июня" -> 6
+        "июля" -> 7
+        "августа" -> 8
+        "сентября" -> 9
+        "октября" -> 10
+        "ноября" -> 11
+        "декабря" -> 12
+        else -> 13
+    }
+    if (montDigit == 13) return ""
+    if (montDigit == 1 && day > 31) return ""
+    if (montDigit == 2){
+        if(year % 4 == 0 && (year % 400 == 0 || year % 100 != 0)) {if(day > 29) return ""}
+        else if (day > 28) return ""}
+    if (montDigit == 3 && day > 31) return ""
+    if (montDigit == 4 && day > 30) return ""
+    if (montDigit == 5 && day > 31) return ""
+    if (montDigit == 6 && day > 30) return ""
+    if (montDigit == 7 && day > 31) return ""
+    if (montDigit == 8 && day > 31) return ""
+    if (montDigit == 9 && day > 30) return ""
+    if (montDigit == 10 && day > 31) return ""
+    if (montDigit == 11 && day > 30) return ""
+    if (montDigit == 12 && day > 31) return ""
+    return String.format("%02d.%02d.%d", day, montDigit, year)
+}
 
 /**
  * Средняя
@@ -83,7 +120,47 @@ fun dateStrToDigit(str: String): String = TODO()
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30 февраля 2009) считается неверными
  * входными данными.
  */
-fun dateDigitToStr(digital: String): String = TODO()
+fun dateDigitToStr(digital: String): String {
+    val parts = digital.split(".")
+    if (parts.size != 3) return ""
+    val day :Int
+    try {day = parts[0].toInt()}catch (e: NumberFormatException){return ""}
+    val month :Int
+    try {month = parts[1].toInt()}catch (e: NumberFormatException){return ""}
+    val year :Int
+    try {year = parts[2].toInt()}catch (e: NumberFormatException){return ""}
+    val montStr = when(month){
+        1 -> "января"
+        2 -> "февраля"
+        3 -> "марта"
+        4 -> "апреля"
+        5 -> "мая"
+        6 -> "июня"
+        7 -> "июля"
+        8 -> "августа"
+        9 -> "сентября"
+        10 -> "октября"
+        11-> "ноября"
+        12 -> "декабря"
+        else -> "13"
+    }
+    if (montStr == "13") return ""
+    if (month == 1 && day > 31) return ""
+    if (month == 2){
+        if(year % 4 == 0 && (year % 400 == 0 || year % 100 != 0)) {if(day > 29) return ""}
+        else if (day > 28) return ""}
+    if (month == 3 && day > 31) return ""
+    if (month == 4 && day > 30) return ""
+    if (month == 5 && day > 31) return ""
+    if (month == 6 && day > 30) return ""
+    if (month == 7 && day > 31) return ""
+    if (month == 8 && day > 31) return ""
+    if (month == 9 && day > 30) return ""
+    if (month == 10 && day > 31) return ""
+    if (month == 11 && day > 30) return ""
+    if (month == 12 && day > 31) return ""
+    return String.format("%d %s %d", day, montStr, year)
+}
 
 /**
  * Средняя
@@ -97,7 +174,14 @@ fun dateDigitToStr(digital: String): String = TODO()
  * Все символы в номере, кроме цифр, пробелов и +-(), считать недопустимыми.
  * При неверном формате вернуть пустую строку
  */
-fun flattenPhoneNumber(phone: String): String = TODO()
+fun flattenPhoneNumber(phone: String): String{
+    var result = ""
+    if (phone.startsWith('+')) result = "+"
+    for (char in phone){
+        if (char in ':'..'z') return ""
+        if (char in '0'..'9') result += char
+    }
+return result}
 
 /**
  * Средняя
@@ -109,7 +193,18 @@ fun flattenPhoneNumber(phone: String): String = TODO()
  * Прочитать строку и вернуть максимальное присутствующее в ней число (717 в примере).
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
-fun bestLongJump(jumps: String): Int = TODO()
+fun bestLongJump(jumps: String): Int{
+    val parts = jumps.split(" ")
+    val resultsInt = mutableListOf<Int>()
+    var jump :Int
+    parts.forEach {
+        if (it[0] in ':'..'z' || it[0] in '&'..',') return -1
+        jump = 0
+        try {jump = it.toInt()}catch (e: NumberFormatException){}
+        if (jump != 0) resultsInt.add(jump)
+    }
+    return (resultsInt.max() ?: -1)
+}
 
 /**
  * Сложная
@@ -121,7 +216,18 @@ fun bestLongJump(jumps: String): Int = TODO()
  * Прочитать строку и вернуть максимальную взятую высоту (230 в примере).
  * При нарушении формата входной строки вернуть -1.
  */
-fun bestHighJump(jumps: String): Int = TODO()
+fun bestHighJump(jumps: String): Int{
+val parts = jumps.split(" ")
+val resultsInt = mutableListOf<Int>()
+var jump = 0
+parts.forEach {
+    if (it[0] in ':'..'z' || it[0] in '&'..'*') return -1
+    if (it[0] == '+' && jump != 0) resultsInt.add(jump)
+    jump = 0
+    try {jump = it.toInt()}catch (e: NumberFormatException){}
+}
+return (resultsInt.max() ?: -1)
+}
 
 /**
  * Сложная
