@@ -238,7 +238,31 @@ return (resultsInt.max() ?: -1)
  * Вернуть значение выражения (6 для примера).
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
-fun plusMinus(expression: String): Int = TODO()
+fun plusMinus(expression: String): Int {
+    var operation = 0
+    val parts = expression.split(" ")
+    var result = 0
+    var i: Int
+    var step = true
+loo@    for(it in parts) {
+        if(step) {try {i = it.toInt()}catch (e: java.lang.NumberFormatException){throw IllegalArgumentException("IllegalArgumentException")}
+            step = false}
+        else {
+            operation = when (it) {
+                "+" -> 1
+                "-" -> 2
+                else -> throw IllegalArgumentException("IllegalArgumentException")
+            }
+        step = true
+        continue@loo}
+        when(operation){
+            1 -> result += i
+            2 -> result -= i
+            else -> result = i
+        }
+
+    }
+return result}
 
 /**
  * Сложная
