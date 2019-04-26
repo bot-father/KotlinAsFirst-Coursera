@@ -260,7 +260,6 @@ loo@    for(it in parts) {
             2 -> result -= i
             else -> result = i
         }
-
     }
 return result}
 
@@ -273,7 +272,17 @@ return result}
  * Вернуть индекс начала первого повторяющегося слова, или -1, если повторов нет.
  * Пример: "Он пошёл в в школу" => результат 9 (индекс первого 'в')
  */
-fun firstDuplicateIndex(str: String): Int = TODO()
+
+fun firstDuplicateIndex(str: String): Int{
+    var result = 0
+    val parts = str.split(" ")
+    var helVar = " "
+    parts.forEach {
+        if(it.equals(helVar, true)) return result - it.length - 1
+        result += it.length + 1
+        helVar = it
+    }
+    return -1}
 
 /**
  * Сложная
@@ -286,7 +295,21 @@ fun firstDuplicateIndex(str: String): Int = TODO()
  * или пустую строку при нарушении формата строки.
  * Все цены должны быть больше либо равны нуля.
  */
-fun mostExpensive(description: String): String = TODO()
+fun mostExpensive(description: String): String{
+    var maxPreis = 0.0
+    var currentPreis: Double
+    var result = ""
+    val parts = description.split("; ")
+    if(parts[0].isEmpty()) return ""
+    parts.forEach {
+        val helpParts = it.split(" ")
+        try {currentPreis = helpParts[1].toDouble()}catch (e: java.lang.NumberFormatException){return ""}
+        if (currentPreis > maxPreis){
+            maxPreis = currentPreis
+            result = helpParts[0]
+        }
+    }
+return result}
 
 /**
  * Сложная
@@ -299,7 +322,108 @@ fun mostExpensive(description: String): String = TODO()
  *
  * Вернуть -1, если roman не является корректным римским числом
  */
-fun fromRoman(roman: String): Int = TODO()
+fun fromRoman(roman: String): Int{
+    var result = 0
+    var zw = roman
+    //тысячи
+    when{
+        zw.startsWith("MMM") -> {
+            result = 3000
+            zw = zw.removePrefix("MMM")}
+        zw.startsWith("MM") -> {
+            result = 2000
+            zw = zw.removePrefix("MM")}
+        zw.startsWith("M") -> {
+            result = 1000
+            zw = zw.removePrefix("M")}
+        else -> {}
+    }
+    //сотни
+    when{
+        zw.startsWith("CCC") -> {
+            result += 300
+            zw = zw.removePrefix("CCC")}
+        zw.startsWith("CC") -> {
+            result += 200
+            zw = zw.removePrefix("CC")}
+        zw.startsWith("CD") -> {
+            result += 400
+            zw = zw.removePrefix("CD")}
+        zw.startsWith("CM") -> {
+            result += 900
+            zw = zw.removePrefix("CM")}
+        zw.startsWith("C") -> {
+            result += 100
+            zw = zw.removePrefix("C")}
+        zw.startsWith("DCCC") -> {
+            result += 800
+            zw = zw.removePrefix("DCCC")}
+        zw.startsWith("DCC") -> {
+            result += 700
+            zw = zw.removePrefix("DCC")}
+        zw.startsWith("DC") -> {
+            result += 600
+            zw = zw.removePrefix("DC")}
+        zw.startsWith("D") -> {
+            result += 500
+            zw = zw.removePrefix("D")}
+        else -> {}
+    }
+    //десятки
+    when{
+        zw.startsWith("XXX") -> {
+            result += 30
+            zw = zw.removePrefix("XXX")}
+        zw.startsWith("XX") -> {
+            result += 20
+            zw = zw.removePrefix("XX")}
+        zw.startsWith("XL") -> {
+            result += 40
+            zw = zw.removePrefix("XL")}
+        zw.startsWith("LXXX") -> {
+            result += 80
+            zw = zw.removePrefix("LXXX")}
+        zw.startsWith("LXX") -> {
+            result += 70
+            zw = zw.removePrefix("LXX")}
+        zw.startsWith("LX") -> {
+            result += 60
+            zw = zw.removePrefix("LX")}
+        zw.startsWith("L") -> {
+            result += 50
+            zw = zw.removePrefix("L")}
+        zw.startsWith("XC") -> {
+            result += 90
+            zw = zw.removePrefix("XC")}
+        zw.startsWith("X") -> {
+            result += 10
+            zw = zw.removePrefix("X")}
+        else -> {}
+    }
+    //единицы
+    when{
+        zw.startsWith("III") -> {
+            result += 3 }
+        zw.startsWith("II") -> {
+            result += 2}
+        zw.startsWith("IV") -> {
+            result += 4}
+        zw.startsWith("VIII") -> {
+            result += 8}
+        zw.startsWith("VII") -> {
+            result += 7}
+        zw.startsWith("VI") -> {
+            result += 6}
+        zw.startsWith("V") -> {
+            result += 5}
+        zw.startsWith("IX") -> {
+            result += 9}
+        zw.startsWith("I") -> {
+            result += 1}
+        else -> {}
+    }
+    if (result == 0) return -1
+return result}
 
 /**
  * Очень сложная
@@ -337,4 +461,50 @@ fun fromRoman(roman: String): Int = TODO()
  * IllegalArgumentException должен бросаться даже если ошибочная команда не была достигнута в ходе выполнения.
  *
  */
-fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> = TODO()
+fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int>{
+    //check for errors
+    var i = 0
+    var inArray = cells / 2
+    for (char in commands){
+        when(char) {
+            '[' -> i++
+            ']' -> i--
+            '>' -> inArray++
+            '<' -> inArray--
+            '+' -> {}
+            '-' -> {}
+            ' ' -> {}
+            else -> throw IllegalArgumentException("Illegal symbol")
+        }
+        if(i < 0) throw IllegalArgumentException("IllegalArgumentException")
+    }
+    if(i != 0) throw IllegalArgumentException("[ count is not ] count")
+    //lets fuck the brain!
+    val result = mutableListOf<Int>()
+    val returnAddres = mutableListOf<Int>()
+    for (j in 1..cells) result.add(0)
+    var commandsC0unt = 0
+    inArray = cells / 2
+    do{
+        when(commands[i]){
+            '+' -> result[inArray]++
+            '-' -> result[inArray]--
+            '>' -> inArray++
+            '<' -> inArray--
+            '[' -> {
+                if(result[inArray] == 0) do {
+                    i++
+                    }while (commands[i] != ']')
+                else returnAddres.add(i)
+                }
+            ']' -> {
+                if(result[inArray] != 0) i = returnAddres[returnAddres.lastIndex]
+                else returnAddres.removeAt(returnAddres.lastIndex)
+                }
+            else -> {}
+        }
+        i++
+        commandsC0unt++
+        if (inArray < 0 || inArray >= cells) throw IllegalStateException("Out of cells")
+        }while (commandsC0unt < limit && i < commands.length)
+return result}
