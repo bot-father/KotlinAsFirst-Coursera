@@ -54,7 +54,18 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
  * Регистр букв игнорировать, то есть буквы е и Е считать одинаковыми.
  *
  */
-fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> = TODO()
+fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {
+    val result = mutableMapOf<String,Int>()
+    val inFile = File(inputName)
+    val textToSearch = inFile.readText()
+    substrings.forEach {
+        result[it] = 0
+        var xy = textToSearch
+        do{
+            if(xy.startsWith(it, true)) result[it] = (result[it] ?: 0) + 1
+            xy = xy.substring(1)
+            }while(xy.length >= it.length) }
+return result}
 
 
 /**
@@ -71,7 +82,35 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
  *
  */
 fun sibilants(inputName: String, outputName: String) {
-    TODO()
+    val inFile = File(inputName)
+    val outputStream = File(outputName).bufferedWriter()
+    var txtIn = inFile.readText()
+    do {
+        when{
+            txtIn.startsWith("жы", true) -> {outputStream.write("%c%c".format(txtIn[0], (txtIn[1].toInt() - 19).toChar()))
+                txtIn = txtIn.substring(2)}
+            txtIn.startsWith("шы", true) -> {outputStream.write("%c%c".format(txtIn[0], (txtIn[1].toInt() - 19).toChar()))
+                txtIn = txtIn.substring(2)}
+            txtIn.startsWith("жя", true) -> {outputStream.write("%c%c".format(txtIn[0], (txtIn[1].toInt() - 31).toChar()))
+                txtIn = txtIn.substring(2)}
+            txtIn.startsWith("щя", true) -> {outputStream.write("%c%c".format(txtIn[0], (txtIn[1].toInt() - 31).toChar()))
+                txtIn = txtIn.substring(2)}
+            txtIn.startsWith("шя", true) -> {outputStream.write("%c%c".format(txtIn[0], (txtIn[1].toInt() - 31).toChar()))
+                txtIn = txtIn.substring(2)}
+            txtIn.startsWith("жю", true) -> {outputStream.write("%c%c".format(txtIn[0], (txtIn[1].toInt() - 11).toChar()))
+                txtIn = txtIn.substring(2)}
+            txtIn.startsWith("щю", true) -> {outputStream.write("%c%c".format(txtIn[0], (txtIn[1].toInt() - 11).toChar()))
+                txtIn = txtIn.substring(2)}
+            txtIn.startsWith("шю", true) -> {outputStream.write("%c%c".format(txtIn[0], (txtIn[1].toInt() - 11).toChar()))
+                txtIn = txtIn.substring(2)}
+            txtIn.startsWith("чю", true) -> {outputStream.write("%c%c".format(txtIn[0], (txtIn[1].toInt() - 11).toChar()))
+                txtIn = txtIn.substring(2)}
+            txtIn.startsWith("чя", true) -> {outputStream.write("%c%c".format(txtIn[0], (txtIn[1].toInt() - 31).toChar()))
+                txtIn = txtIn.substring(2)}
+            else -> {outputStream.write(txtIn[0].toString())
+                txtIn = txtIn.substring(1)}}
+    }while (txtIn.isNotEmpty())
+    outputStream.close()
 }
 
 /**
