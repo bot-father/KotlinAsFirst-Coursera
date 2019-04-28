@@ -56,14 +56,13 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
  */
 fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {
     val result = mutableMapOf<String,Int>()
-    val inFile = File(inputName)
-    val textToSearch = inFile.readText()
+    val textToSearch = File(inputName).readText()
     substrings.forEach {
-        result[it] = 0
         var xy = textToSearch
+        result[it] = 0
         do{
             if(xy.startsWith(it, true)) result[it] = (result[it] ?: 0) + 1
-            xy = xy.substring(1)
+            xy = xy.drop(1)
             }while(xy.length >= it.length) }
 return result}
 
@@ -82,33 +81,32 @@ return result}
  *
  */
 fun sibilants(inputName: String, outputName: String) {
-    val inFile = File(inputName)
     val outputStream = File(outputName).bufferedWriter()
-    var txtIn = inFile.readText()
+    var txtIn = File(inputName).readText()
     do {
         when{
             txtIn.startsWith("жы", true) -> {outputStream.write("%c%c".format(txtIn[0], (txtIn[1].toInt() - 19).toChar()))
-                txtIn = txtIn.substring(2)}
+                txtIn = txtIn.drop(2)}
             txtIn.startsWith("шы", true) -> {outputStream.write("%c%c".format(txtIn[0], (txtIn[1].toInt() - 19).toChar()))
-                txtIn = txtIn.substring(2)}
+                txtIn = txtIn.drop(2)}
             txtIn.startsWith("жя", true) -> {outputStream.write("%c%c".format(txtIn[0], (txtIn[1].toInt() - 31).toChar()))
-                txtIn = txtIn.substring(2)}
+                txtIn = txtIn.drop(2)}
             txtIn.startsWith("щя", true) -> {outputStream.write("%c%c".format(txtIn[0], (txtIn[1].toInt() - 31).toChar()))
-                txtIn = txtIn.substring(2)}
+                txtIn = txtIn.drop(2)}
             txtIn.startsWith("шя", true) -> {outputStream.write("%c%c".format(txtIn[0], (txtIn[1].toInt() - 31).toChar()))
-                txtIn = txtIn.substring(2)}
+                txtIn = txtIn.drop(2)}
             txtIn.startsWith("жю", true) -> {outputStream.write("%c%c".format(txtIn[0], (txtIn[1].toInt() - 11).toChar()))
-                txtIn = txtIn.substring(2)}
+                txtIn = txtIn.drop(2)}
             txtIn.startsWith("щю", true) -> {outputStream.write("%c%c".format(txtIn[0], (txtIn[1].toInt() - 11).toChar()))
-                txtIn = txtIn.substring(2)}
+                txtIn = txtIn.drop(2)}
             txtIn.startsWith("шю", true) -> {outputStream.write("%c%c".format(txtIn[0], (txtIn[1].toInt() - 11).toChar()))
-                txtIn = txtIn.substring(2)}
+                txtIn = txtIn.drop(2)}
             txtIn.startsWith("чю", true) -> {outputStream.write("%c%c".format(txtIn[0], (txtIn[1].toInt() - 11).toChar()))
-                txtIn = txtIn.substring(2)}
+                txtIn = txtIn.drop(2)}
             txtIn.startsWith("чя", true) -> {outputStream.write("%c%c".format(txtIn[0], (txtIn[1].toInt() - 31).toChar()))
-                txtIn = txtIn.substring(2)}
+                txtIn = txtIn.drop(2)}
             else -> {outputStream.write(txtIn[0].toString())
-                txtIn = txtIn.substring(1)}}
+                txtIn = txtIn.drop(1)}}
     }while (txtIn.isNotEmpty())
     outputStream.close()
 }
@@ -123,7 +121,7 @@ fun sibilants(inputName: String, outputName: String) {
  * Выравнивание следует производить путём добавления пробелов в начало строки.
  *
  *
- * Следующие правила должны быть выполнены:
+ * Следующие правила должны быть выполнены:outputStream.close()
  * 1) Пробелы в начале и в конце всех строк не следует сохранять.
  * 2) В случае невозможности выравнивания строго по центру, строка должна быть сдвинута в ЛЕВУЮ сторону
  * 3) Пустые строки не являются особым случаем, их тоже следует выравнивать
@@ -131,7 +129,23 @@ fun sibilants(inputName: String, outputName: String) {
  *
  */
 fun centerFile(inputName: String, outputName: String) {
-    TODO()
+    val inFile = File(inputName)
+    var maxStrLength = 0
+    val outputStream = File(outputName).bufferedWriter()
+    val workMap = mutableListOf<List<String>>()
+    for (line in inFile.readLines()) { //разобьём текст на строки и слова, выпилив пробелы в начале строк
+        workMap.add(line.dropWhile{it == ' '}.split(" "))
+    }
+    workMap.forEach { //найдём строку максимальной длины
+        val leng = it.fold(0){ total, next -> total + next.length + 1}
+        if(leng > maxStrLength) maxStrLength = leng}
+    workMap.forEach {
+        val spaces = (maxStrLength - it.fold(0){ total, next -> total + next.length + 1}) / 2
+        for (i in 1..spaces) outputStream.write(" ")
+        outputStream.write(it.joinToString(separator = " "))
+        outputStream.newLine()
+    }
+    outputStream.close()
 }
 
 /**
@@ -162,7 +176,38 @@ fun centerFile(inputName: String, outputName: String) {
  * 8) Если входной файл удовлетворяет требованиям 1-7, то он должен быть в точности идентичен выходному файлу
  */
 fun alignFileByWidth(inputName: String, outputName: String) {
-    TODO()
+    val inFile = File(inputName)
+    var maxStrLength = 0
+    val outputStream = File(outputName).bufferedWriter()
+    val workMap = mutableListOf<List<String>>()
+    for (line in inFile.readLines()) { //разобьём текст на строки и слова, выпилив пробелы в начале строк
+        workMap.add(line.dropWhile{it == ' '}.split(" "))
+    }
+    workMap.forEach { //найдём строку максимальной длины
+        val leng = it.fold(0){ total, next -> total + next.length + 1}
+        if(leng > maxStrLength) maxStrLength = leng}
+    workMap.forEach {
+        if (it.isNotEmpty()){
+            if (it.size != 1){
+                var spaces = (maxStrLength - 1 - it.fold(0){ total, next -> total + next.length}) //считаем необходимое кол-во пробелов
+                val listOfSpaces = mutableListOf<String>() //формируем список пробелов
+                for (j in 1 until it.size) listOfSpaces.add("")
+                var i = 0
+                do {
+                    listOfSpaces[i % listOfSpaces.size] = listOfSpaces[i % listOfSpaces.size] + ' '
+                    i++
+                    spaces--
+                }while (spaces != 0)
+                listOfSpaces.forEachIndexed {ind,  es -> //вывод слов и пробелов по очереди
+                    outputStream.write(it[ind])
+                    outputStream.write(es)
+                    }
+                outputStream.write(it[it.size - 1]) //вывод последнего слова в строке
+            }
+            else outputStream.write(it[0])}
+        outputStream.newLine()
+    }
+    outputStream.close()
 }
 
 /**
