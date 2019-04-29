@@ -228,7 +228,28 @@ fun alignFileByWidth(inputName: String, outputName: String) {
  * Ключи в ассоциативном массиве должны быть в нижнем регистре.
  *
  */
-fun top20Words(inputName: String): Map<String, Int> = TODO()
+fun top20Words(inputName: String): Map<String, Int> {
+    val result = mutableMapOf<String, Int>()
+     //разобьём текст на строки и слова, выпилив всё, кроме букв
+    val toworkList = File(inputName).readText().replace('.', ' ', true).replace('-', ' ', true).replace('\n', ' ', true).toLowerCase().split(" ")
+    // соберём промежуточный связанный список со всеми словами и их повторениями
+    toworkList.forEach{if (it.isNotEmpty()){
+        val es = it.dropWhile{es -> !es.isLetter()}.dropLastWhile{es -> !es.isLetter()}
+        result[es] = (result[es] ?: 0) + 1}}
+    //выберем максимальные 20
+    val endResult = mutableMapOf<String, Int>()
+    var k = ""
+    while (result.isNotEmpty() && endResult.size < 20){
+        var maxCount = 0
+        result.forEach { (s, i) ->
+            if (i > maxCount){
+            maxCount = i
+            k = s
+        }}
+        if (k.isNotEmpty()) endResult[k] = maxCount
+        result.minusAssign(k)
+    }
+return endResult}
 
 /**
  * Средняя
@@ -266,7 +287,28 @@ fun top20Words(inputName: String): Map<String, Int> = TODO()
  * Обратите внимание: данная функция не имеет возвращаемого значения
  */
 fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: String) {
-    TODO()
+    var toworkText = File(inputName).readText()
+    var resultText = ""
+    dictionary.forEach { c, s ->
+        toworkText.forEach {
+            if(it in 'А'..'Я' && it.equals(c, true)) resultText += s.toLowerCase().capitalize()
+            else if(it in 'а'..'я' && it.equals(c, true)) resultText += s.toLowerCase()
+            else resultText += it
+        }
+                toworkText = resultText
+        resultText = ""
+    }
+    dictionary.forEach { c, s ->
+        toworkText.forEach {
+            if(it !in 'а'..'я' && it !in 'А'..'Я' && it.equals(c, true)) resultText += s
+            else resultText += it
+        }
+        toworkText = resultText
+        resultText = ""
+    }
+    val outputStream = File(outputName).bufferedWriter()
+    outputStream.write(toworkText)
+    outputStream.close()
 }
 
 /**
