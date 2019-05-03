@@ -145,11 +145,9 @@ fun mean(list: List<Double>): Double { //2
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
 fun center(list: MutableList<Double>): MutableList<Double> { //3
-    var sum: Double
     if(list.isEmpty()) return list
-    sum = list.reduce { total, next -> total + next }
-    sum /= list.size
-    list.forEach{it - sum}
+    val sum  = list.sum() / list.size
+    for (i in 0 until list.size) list[i] -= sum
     return list}
 
 /**
@@ -175,12 +173,11 @@ fun times(a: List<Double>, b: List<Double>): Double { //4
 
 */
 
-fun polynom(p: List<Double>, x: Double): Double{ //5
-    var result = 0.0
-    if(p.isEmpty()) return result
-    result = p.foldIndexed(0.0, {i, sum, next -> sum + next * x.pow(i)})
-    return result}
-
+/*fun polynom(p: List<Double>, x: Double): Double = when{
+    p.isEmpty() -> 0.0
+    else -> p.foldIndexed(0.0, {i, sum, next -> sum + next * x.pow(i)})}
+*/
+fun polynom(p: List<Double>, x: Double): Double = p.foldIndexed(0.0, {i, sum, next -> sum + next * x.pow(i)})
 /**
  * Средняя
  *
@@ -193,8 +190,7 @@ fun polynom(p: List<Double>, x: Double): Double{ //5
  */
 fun accumulate(list: MutableList<Double>): MutableList<Double> { //6
     if(list.size < 2) return list
-    for (i in (list.size - 1) downTo 1){
-        for (j in (i - 1) downTo 0) list[i] += list[j] }
+    for (i in (list.size - 1) downTo 1) list[i] = list.take(i + 1).sum()
     return list}
 
 /**
@@ -231,17 +227,15 @@ return result}
 fun factorizeToString(n: Int): String { //8
     var ishod = n
     val result = mutableListOf<Int>()
-    if(isPrime(n)){
-        result.add(n)
-        return result.joinToString(separator = "*")
-    }
+    if(isPrime(n)) return n.toString()
     do{
         for( i in 2..ishod)
             if(isPrime(i)){
                 if (ishod % i == 0){
                     result.add(i)
                     ishod /= i
-                    break}}}while (!isPrime(ishod))
+                    break }
+            }}while (!isPrime(ishod))
     result.add(ishod)
     return result.joinToString(separator = "*")}
 
@@ -283,9 +277,9 @@ fun convertToString(n: Int, base: Int): String { //10
         rest /= base
     }while (rest > base)
     if(rest != 0) result.add(rest)
-    for (i in result.size - 1 downTo 0) endResult.add(when{
-        result[i] < 10 -> (48 + result[i]).toChar()
-        else -> (87 + result[i]).toChar()})
+    result.reversed().forEach { endResult.add(when{
+        it < 10 -> (48 + it).toChar()
+        else -> (87 + it).toChar()}) }
     return endResult.joinToString(separator = "")}
 
 /**

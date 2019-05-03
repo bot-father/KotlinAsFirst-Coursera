@@ -287,27 +287,35 @@ return endResult}
  * Обратите внимание: данная функция не имеет возвращаемого значения
  */
 fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: String) {
-    var toworkText = File(inputName).readText()
+    val toworkText = File(inputName).readText()
     var resultText = ""
-    dictionary.forEach { c, s ->
-        toworkText.forEach {
-            if(it in 'А'..'Я' && it.equals(c, true)) resultText += s.toLowerCase().capitalize()
-            else if(it in 'а'..'я' && it.equals(c, true)) resultText += s.toLowerCase()
-            else resultText += it
+    var change = true
+    toworkText.forEach {
+        when(it){
+            in 'А'..'Я' -> {
+                dictionary.forEach { (c, s) ->
+                    if (it.equals(c, true)){
+                        resultText += s.toLowerCase().capitalize()
+                        change = false
+                    }
+                }}
+            in 'а'..'я' -> {
+                dictionary.forEach { (c, s) ->
+                    if (it.equals(c, true)){
+                        resultText += s.toLowerCase()
+                        change = false
+                    }
+                }}
+            else -> dictionary.forEach { (c, s) ->
+                if (it.equals(c, true)){
+                    resultText += s
+                    change = false
+                }}}
+        if (change) resultText += it
+        change = true
         }
-                toworkText = resultText
-        resultText = ""
-    }
-    dictionary.forEach { c, s ->
-        toworkText.forEach {
-            if(it !in 'а'..'я' && it !in 'А'..'Я' && it.equals(c, true)) resultText += s
-            else resultText += it
-        }
-        toworkText = resultText
-        resultText = ""
-    }
     val outputStream = File(outputName).bufferedWriter()
-    outputStream.write(toworkText)
+    outputStream.write(resultText)
     outputStream.close()
 }
 
@@ -336,7 +344,25 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
  * Обратите внимание: данная функция не имеет возвращаемого значения
  */
 fun chooseLongestChaoticWord(inputName: String, outputName: String) {
-    TODO()
+    val workMap = mutableMapOf<String, Int>()
+    var gotIt = true
+    //найдём все слова с разными буквами
+    for (line in File(inputName).readLines()) {
+        for (i in 0 until line.length - 2){
+            for (j in i + 1 until line.length - 1) if (line[i].equals(line[j], true)) gotIt = false
+        }
+        if (gotIt) workMap[line] = line.length
+        gotIt = true
+    }
+    //выберем длиннейшие
+    var maxSize = 0
+    val outList = mutableListOf<String>()
+    workMap.forEach { (_, i) ->  if (i > maxSize) maxSize = i}
+    workMap.forEach{ (s, i) -> if (i == maxSize) outList.add(s)}
+    //вывод
+    val outputStream = File(outputName).bufferedWriter()
+    outputStream.write(outList.joinToString())
+    outputStream.close()
 }
 
 /**
@@ -383,7 +409,44 @@ Suspendisse ~~et elit in enim tempus iaculis~~.
  * (Отступы и переносы строк в примере добавлены для наглядности, при решении задачи их реализовывать не обязательно)
  */
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
-    TODO()
+    val toworkText = File(inputName).readText()
+    var outText = "<html>\n    <body>\n        <p>\n            "
+    var i = false
+    var b = false
+    var s = false
+    var j = 0
+    while (j < toworkText.length - 1){
+        when{
+            toworkText[j] == '*' && toworkText[j + 1] == '*' -> {
+                if (b) {outText += "</b>"
+                    b = false}
+                else {outText += "<b>"
+                    b = true}
+                j += 2}
+            toworkText[j] == '*' -> {
+                if (i) {outText += "</i>"
+                    i = false}
+                else {outText += "<i>"
+                    i = true}
+                j++}
+            toworkText[j] == '~' && toworkText[j + 1] == '~' -> {
+                if (s) {outText += "</s>"
+                    s = false}
+                else {outText += "<s>"
+                    s = true}
+                j += 2}
+            toworkText[j] == '\n' && toworkText[j + 1] == '\n' -> {
+                outText += "</p>\n        <p>"
+                j += 2}
+            else -> {outText += toworkText[j]
+                j++}
+        }
+    }
+    outText += "        </p>\n    </body>\n</html>"
+    //вывод
+    val outputStream = File(outputName).bufferedWriter()
+    outputStream.write(outText)
+    outputStream.close()
 }
 
 /**
