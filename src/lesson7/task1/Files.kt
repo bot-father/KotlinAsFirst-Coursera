@@ -176,11 +176,10 @@ fun centerFile(inputName: String, outputName: String) {
  * 8) Если входной файл удовлетворяет требованиям 1-7, то он должен быть в точности идентичен выходному файлу
  */
 fun alignFileByWidth(inputName: String, outputName: String) {
-    val inFile = File(inputName)
     var maxStrLength = 0
     val outputStream = File(outputName).bufferedWriter()
     val workMap = mutableListOf<List<String>>()
-    for (line in inFile.readLines()) { //разобьём текст на строки и слова, выпилив пробелы в начале строк
+    for (line in File(inputName).readLines()) { //разобьём текст на строки и слова, выпилив пробелы в начале строк
         workMap.add(line.dropWhile{it == ' '}.split(" "))
     }
     workMap.forEach { //найдём строку максимальной длины
@@ -189,21 +188,19 @@ fun alignFileByWidth(inputName: String, outputName: String) {
     workMap.forEach {
         if (it.isNotEmpty()){
             if (it.size != 1){
-                var spaces = (maxStrLength - 1 - it.fold(0){ total, next -> total + next.length}) //считаем необходимое кол-во пробелов
+                val spaces = (maxStrLength - it.fold(1){ total, next -> total + next.length}) //считаем необходимое кол-во пробелов
                 val listOfSpaces = mutableListOf<String>() //формируем список пробелов
                 for (j in 1 until it.size) listOfSpaces.add("")
                 var i = 0
                 do {
                     listOfSpaces[i % listOfSpaces.size] = listOfSpaces[i % listOfSpaces.size] + ' '
                     i++
-                    spaces--
-                }while (spaces != 0)
+                }while (spaces > i)
                 listOfSpaces.forEachIndexed {ind,  es -> //вывод слов и пробелов по очереди
                     outputStream.write(it[ind])
-                    outputStream.write(es)
-                    }
+                    outputStream.write(es)}
                 outputStream.write(it[it.size - 1]) //вывод последнего слова в строке
-            }
+                }
             else outputStream.write(it[0])}
         outputStream.newLine()
     }
@@ -348,20 +345,21 @@ fun chooseLongestChaoticWord(inputName: String, outputName: String) {
     var gotIt = true
     //найдём все слова с разными буквами
     for (line in File(inputName).readLines()) {
-        for (i in 0 until line.length - 2){
-            for (j in i + 1 until line.length - 1) if (line[i].equals(line[j], true)) gotIt = false
+        for (i in 0 until line.length - 1){
+            for (j in i + 1 until line.length) if (line[i].equals(line[j], true)){
+                gotIt = false
+                break
+            }
         }
         if (gotIt) workMap[line] = line.length
         gotIt = true
     }
     //выберем длиннейшие
     var maxSize = 0
-    val outList = mutableListOf<String>()
     workMap.forEach { (_, i) ->  if (i > maxSize) maxSize = i}
-    workMap.forEach{ (s, i) -> if (i == maxSize) outList.add(s)}
     //вывод
     val outputStream = File(outputName).bufferedWriter()
-    outputStream.write(outList.joinToString())
+    outputStream.write(workMap.filter { it.value == maxSize }.keys.joinToString())
     outputStream.close()
 }
 
@@ -549,7 +547,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
  * (Отступы и переносы строк в примере добавлены для наглядности, при решении задачи их реализовывать не обязательно)
  */
 fun markdownToHtmlLists(inputName: String, outputName: String) {
-    TODO()
+TODO()
 }
 
 /**
@@ -590,7 +588,31 @@ fun markdownToHtml(inputName: String, outputName: String) {
  *
  */
 fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
-    TODO()
+    val outputStream = File(outputName).bufferedWriter()
+    val result = (lhv * rhv).toString()
+    var rvhVar = rhv
+    var digit: Int
+    var nextStr: String
+    var spaces = 0
+    outputStream.write(lhv.toString().padStart(1 + result.length, ' '))
+    outputStream.newLine()
+    outputStream.write("*${rhv.toString().padStart(result.length, ' ')}\n")
+    for (i in 0..result.length) outputStream.write("-")
+    outputStream.newLine()
+    while (rvhVar > 0){
+        digit = rvhVar % 10
+        nextStr = (lhv * digit).toString().padStart(result.length - spaces, ' ')
+        nextStr = if (spaces == 0) " $nextStr"
+        else "+$nextStr"
+        outputStream.write(nextStr)
+        outputStream.newLine()
+        spaces++
+        rvhVar /= 10
+    }
+    for (i in 0..result.length) outputStream.write("-")
+    outputStream.newLine()
+    outputStream.write(" $result")
+    outputStream.close()
 }
 
 
@@ -615,6 +637,6 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
  *
  */
 fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
-    TODO()
+TODO()
 }
 

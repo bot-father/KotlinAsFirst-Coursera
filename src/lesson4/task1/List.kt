@@ -117,24 +117,20 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
  * по формуле abs = sqrt(a1^2 + a2^2 + ... + aN^2).
  * Модуль пустого вектора считать равным 0.0.
  */
-fun abs(v: List<Double>): Double { //1
-    var result = 0.0
-    if(v.isEmpty()) return result
-    result = v.fold(0.0, { total, next -> total + next * next })
-    return sqrt(result)
-}
+/*fun abs(v: List<Double>) = when{
+    v.isEmpty() -> 0.0
+    else -> sqrt(v.fold(0.0, { total, next -> total + next * next }))
+}*/
+fun abs(v: List<Double>) = sqrt(v.fold(0.0, { total, next -> total + next * next }))
 
 /**
  * Простая
  *
  * Рассчитать среднее арифметическое элементов списка list. Вернуть 0.0, если список пуст
  */
-fun mean(list: List<Double>): Double { //2
-    val result: Double
-    if(list.isEmpty()) return 0.0
-    result = list.reduce { total, next -> total + next }
-    return result / list.size
-}
+fun mean(list: List<Double>) = when{
+    list.isEmpty() ->  0.0
+    else -> list.sum() / list.size}
 
 /**
  * Средняя
@@ -173,10 +169,6 @@ fun times(a: List<Double>, b: List<Double>): Double { //4
 
 */
 
-/*fun polynom(p: List<Double>, x: Double): Double = when{
-    p.isEmpty() -> 0.0
-    else -> p.foldIndexed(0.0, {i, sum, next -> sum + next * x.pow(i)})}
-*/
 fun polynom(p: List<Double>, x: Double): Double = p.foldIndexed(0.0, {i, sum, next -> sum + next * x.pow(i)})
 /**
  * Средняя
@@ -247,12 +239,10 @@ fun factorizeToString(n: Int): String { //8
  * например: n = 100, base = 4 -> (1, 2, 1, 0) или n = 250, base = 14 -> (1, 3, 12)
  */
 fun convert(n: Int, base: Int): List<Int> { //9
-    var numb: Int
     var rest = n
     val result = mutableListOf<Int>()
     do{
-        numb = rest % base
-        result.add(numb)
+        result.add(rest % base)
         rest /= base
     }while (rest > base)
     if(rest != 0) result.add(rest)
@@ -267,13 +257,11 @@ fun convert(n: Int, base: Int): List<Int> { //9
  * Например: n = 100, base = 4 -> 1210, n = 250, base = 14 -> 13c
  */
 fun convertToString(n: Int, base: Int): String { //10
-    var numb: Int
     var rest = n
     val result = mutableListOf<Int>()
     val endResult = mutableListOf<Char>()
     do{
-        numb = rest % base
-        result.add(numb)
+        result.add(rest % base)
         rest /= base
     }while (rest > base)
     if(rest != 0) result.add(rest)

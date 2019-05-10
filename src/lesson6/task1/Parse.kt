@@ -193,17 +193,17 @@ return result}
  * Прочитать строку и вернуть максимальное присутствующее в ней число (717 в примере).
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
+
 fun bestLongJump(jumps: String): Int{
     val parts = jumps.split(" ")
-    val resultsInt = mutableListOf<Int>()
-    var jump :Int
+    val partsInt = mutableListOf<Int>()
     parts.forEach {
-        if (it[0] in ':'..'z' || it[0] in '&'..',') return -1
-        jump = 0
-        try {jump = it.toInt()}catch (e: NumberFormatException){}
-        if (jump != 0) resultsInt.add(jump)
-    }
-    return (resultsInt.max() ?: -1)
+        when{
+            Regex("""\d+""").containsMatchIn(it) -> try {partsInt.add(it.toInt()) }catch (e: NumberFormatException){return -1}
+            it == "-" -> {}
+            it == "%" -> {}
+            else -> return -1}}
+    return (partsInt.max() ?: -1)
 }
 
 /**
@@ -302,11 +302,10 @@ fun mostExpensive(description: String): String{
     val parts = description.split("; ")
     if(parts[0].isEmpty()) return ""
     parts.forEach {
-        val helpParts = it.split(" ")
-        try {currentPreis = helpParts[1].toDouble()}catch (e: java.lang.NumberFormatException){return ""}
+        try {currentPreis = ("""\d.*\d$""".toRegex().find(it)?.value ?: "0").toDouble()}catch (e: java.lang.NumberFormatException){return ""}
         if (currentPreis > maxPreis){
             maxPreis = currentPreis
-            result = helpParts[0]
+            result = it.dropLastWhile { es -> !es.isLetter() }
         }
     }
 return result}

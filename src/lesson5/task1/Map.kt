@@ -96,14 +96,21 @@ fun buildWordSet(text: List<String>): MutableSet<String> {
  *     mapOf("Emergency" to "911", "Police" to "02")
  *   ) -> mapOf("Emergency" to "112, 911", "Police" to "02")
  */
-fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String>{
+/*fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String>{
     val resultMap = mutableMapOf<String, String>()
     resultMap.putAll(mapA)
     mapB.forEach {
         if(mapA.containsKey(it.key) && mapA.getValue(it.key) != it.value) resultMap[it.key] = mapA.getValue(it.key) + ", " + it.value
         else resultMap[it.key] = it.value
     }
-return resultMap}
+return resultMap}*/
+fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String>{
+    val resultMap = mapA.toMutableMap()
+    mapB.forEach {
+        if(mapA.containsKey(it.key) && mapA.getValue(it.key) != it.value) resultMap[it.key] = mapA.getValue(it.key) + ", " + it.value
+        else resultMap[it.key] = it.value
+    }
+    return resultMap}
 
 /**
  * Простая
@@ -330,11 +337,9 @@ return false}
  *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
 fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
-    for (i in 0 until list.size -1){
+    for (i in 0 until list.size - 1){
         for (j in i + 1 until list.size){
-            if (list[i] + list[j] == number){
-                return Pair(i, j)
-            }
+            if (list[i] + list[j] == number) return Pair(i, j)
         }
     }
     return Pair(-1, -1)
